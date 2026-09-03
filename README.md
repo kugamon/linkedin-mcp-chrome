@@ -1,4 +1,4 @@
-# LinkedIn MCP Server — Kugamon Build
+# LinkedIn MCP Server — Auto-Auth From Chrome
 
 [![PyPI](https://img.shields.io/pypi/v/linkedin-mcp-chrome?label=pypi&color=blue)](https://pypi.org/project/linkedin-mcp-chrome/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
