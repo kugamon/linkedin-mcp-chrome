@@ -1,0 +1,13 @@
+{
+  "_comment_1": "Example Claude Desktop config. The file lives at ~/Library/Application Support/Claude/claude_desktop_config.json on macOS.",
+  "_comment_2": "This replaces `mcp-server-linkedin` (or the old `linkedin-scraper-mcp`) with the Kugamon wrapper — same tools, same auth flow, no fastmcp 4.0 crash.",
+  "mcpServers": {
+    "linkedin": {
+      "command": "uvx",
+      "args": ["linkedin-mcp-chrome"],
+      "env": {
+        "UV_HTTP_TIMEOUT": "300"
+      }
+    }
+  }
+}

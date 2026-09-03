@@ -1,0 +1,57 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "linkedin-mcp-chrome"
+version = "0.1.0"
+description = "Thin defensive wrapper for mcp-server-linkedin that pins fastmcp<4 to survive the FastMCP 4.0 API removal (Aug 2026)."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Kugamon", email = "contact@kugamon.com" },
+]
+keywords = [
+    "linkedin",
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "claude",
+    "claude-desktop",
+    "chromium",
+    "fastmcp",
+    "dependency-pin",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS :: MacOS X",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries",
+]
+requires-python = ">=3.12"
+dependencies = [
+    "mcp-server-linkedin>=4.23.1",
+    # Pin fastmcp below 4.0 — the upstream mcp-server-linkedin package
+    # uses `@mcp.tool(exclude_args=[...])` which was removed in fastmcp 4.0.0
+    # (released 2026-08-31). Because upstream declares `fastmcp>=3.4.4` with
+    # no upper bound, every fresh `uvx` resolution after 2026-08-31 crashed
+    # at import with:
+    #   TypeError: FastMCP.tool() got an unexpected keyword argument 'exclude_args'
+    # Until upstream ports to the 4.x API, this pin prevents the crash.
+    "fastmcp>=3.4.4,<4.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/kugamon/linkedin-mcp-chrome"
+Repository = "https://github.com/kugamon/linkedin-mcp-chrome"
+Issues = "https://github.com/kugamon/linkedin-mcp-chrome/issues"
+
+[project.scripts]
+linkedin-mcp-chrome = "linkedin_mcp_chrome.__main__:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/linkedin_mcp_chrome"]
