@@ -22,7 +22,7 @@ jobs:
     # scoping. (You set this up in PyPI once; see the README.)
     environment:
       name: pypi
-      url: https://pypi.org/project/linkedin-mcp/
+      url: https://pypi.org/project/linkedin-mcp-chrome/
 
     steps:
       - name: Check out the repo
