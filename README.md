@@ -52,6 +52,7 @@ The package adds nothing at runtime — no monkey-patching, no cookie extraction
 - **`pyproject.toml`** — the actual work happens here. Declares `mcp-server-linkedin>=4.23.1` and `fastmcp>=3.4.4,<4.0` as dependencies.
 - **`examples/claude_desktop_config.example.json`** — copy-paste-ready Claude Desktop config snippet.
 - **`docs/how-it-works.md`** — the full story: what broke on 2026-08-31, why upstream shipped it unpinned, what this wrapper does about it, and when the pin should come off.
+- **`.claude-plugin/marketplace.json`** + **`plugins/linkedin-research/`** — the optional Claude plugin: four research skills and a shared guardrails file (see [Claude skills](#claude-skills--the-linkedin-research-plugin)).
 
 ---
 
@@ -121,6 +122,47 @@ If you want to sign in *before* the first tool call — or re-authenticate after
 ```bash
 uvx linkedin-mcp-chrome --login
 ```
+
+---
+
+## Claude skills — the linkedin-research plugin
+
+This repo is also a Claude Desktop / Cowork **plugin marketplace**. It ships one plugin, `linkedin-research`, with four
+generic skills that teach Claude how to use this server's tools well — and safely. The skills are optional; the server
+works without them.
+
+| Skill | Use it for |
+| --- | --- |
+| `linkedin-person-research` | One person: find the right profile, current role and tenure from Experience, career path, recent posts, conversation hooks. Also name spellings and roles before a meeting. |
+| `linkedin-company-signals` | One company: leadership changes, headcount and function mix, hiring signals, recent posts — plus a partner-fit mode that scores a firm on reach, relevance and readiness. |
+| `linkedin-contact-verification` | A list of contacts: still there, title changed, left (and where to), not found, or not checked — before outreach or after a list import. |
+| `linkedin-engagement-finder` | Recent posts worth commenting on, filtered by topic, recency, connection degree and author employer, with a drafted comment for each. Never posts. |
+
+All four read `plugins/linkedin-research/references/guardrails.md` first:
+
+- **Session:** on a login, checkpoint or CAPTCHA error, stop and ask you to sign in (`uvx linkedin-mcp-chrome --login`).
+  Never fall back to scraping LinkedIn some other way, and never infer employment from other sources.
+- **Read-only by default:** `send_message` and `connect_with_person` are used only when you ask, after you approve the
+  exact recipient and text — one at a time. There is no posting tool; comments are drafts.
+- **Human-scale volume:** targeted lookups, one call at a time, 25 profile lookups per run unless you approve more, no
+  harvesting of employee lists.
+- **Accuracy:** the Experience section decides someone's current role; every finding carries its URL and read date;
+  "not found" beats a guess.
+
+### Install the skills
+
+The plugin **does not bundle the server** — set the server up first (Part 1 and Part 2 above). Two copies of the
+server would compete for the same saved browser profile (`~/.linkedin-mcp/profile/`).
+
+1. Claude Desktop → **Customize** → **Marketplace** → **+ Add marketplace** → `kugamon/linkedin-mcp-chrome`.
+2. **Sync** → install `linkedin-research` → quit Claude fully (Cmd+Q) and reopen.
+
+Or clone the repo and add `plugins/linkedin-research/` as a local plugin folder. Installed plugins are snapshots: after
+a new release, Sync and update the plugin, then restart.
+
+**Verify:** *"Who is the current VP of Sales at Docker, and how long have they been in the role?"* — Claude should find
+the company slug, search people at that company, confirm the role from the Experience section, and cite the profile URL
+and read date.
 
 ---
 
@@ -258,4 +300,11 @@ If LinkedIn does throttle you, back off and reduce your usage. This wrapper does
 
 ## Version history
 
+- **v0.2.0** — adds the `linkedin-research` Claude plugin (four skills + guardrails) and makes the repo a plugin marketplace. The Python package is unchanged apart from the version number.
 - **v0.1.0** — initial release on PyPI. Wraps `mcp-server-linkedin>=4.23.1`, pins `fastmcp>=3.4.4,<4.0`. macOS + Chromium (Patchright) via upstream — no direct browser interaction from this wrapper.
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE). This project is not affiliated with or endorsed by LinkedIn, Microsoft or Anthropic. LinkedIn is a trademark of LinkedIn Corporation.

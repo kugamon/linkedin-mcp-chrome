@@ -1,0 +1,11 @@
+{
+  "name": "linkedin-research",
+  "version": "0.2.0",
+  "description": "Generic LinkedIn research skills for the linkedin-mcp-chrome server — person research, company signals (with a partner-fit mode), contact verification and an engagement finder — with shared guardrails: read-only by default, human-scale volume, the Experience section as the source of truth, and nothing sent without explicit approval. Requires the linkedin-mcp-chrome MCP server.",
+  "author": { "name": "Kugamon" },
+  "homepage": "https://github.com/kugamon/linkedin-mcp-chrome",
+  "repository": "https://github.com/kugamon/linkedin-mcp-chrome",
+  "license": "MIT",
+  "keywords": ["linkedin", "mcp", "research", "prospecting", "contact-verification", "account-signals", "social-selling", "claude-desktop", "cowork"],
+  "skills": "./skills"
+}

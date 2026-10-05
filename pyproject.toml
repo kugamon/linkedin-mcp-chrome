@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "linkedin-mcp-chrome"
-version = "0.1.0"
+version = "0.2.0"
 description = "Thin defensive wrapper for mcp-server-linkedin that pins fastmcp<4 to survive the FastMCP 4.0 API removal (Aug 2026)."
 readme = "README.md"
 license = { text = "MIT" }
